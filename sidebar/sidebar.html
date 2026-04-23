@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StockPulse</title>
+  <link rel="stylesheet" href="sidebar.css">
+</head>
+<body>
+  <div class="sidebar">
+
+    <!-- Header -->
+    <header class="header">
+      <div class="header-brand">
+        <div class="brand-icon-wrap" id="brand-icon">
+          <img src="../assets/stockpulse_logo_icon.svg" alt="StockPulse logo" width="32" height="32">
+        </div>
+        <span>StockPulse</span>
+      </div>
+      <div class="header-actions">
+        <button class="btn-icon" id="settings-btn" title="Settings" aria-label="Settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+        </button>
+        <button class="btn-icon" id="close-btn" title="Close" aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Query Input -->
+    <section class="query-section">
+      <div class="query-row">
+        <input
+          type="text"
+          class="query-input"
+          id="query-input"
+          placeholder="Analyse Tesla this week…"
+          autocomplete="off"
+          aria-label="Stock query"
+        >
+        <button class="btn-analyse" id="analyse-btn" aria-label="Run analysis">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polygon points="5 3 19 12 5 21 5 3"/>
+          </svg>
+          Analyse
+        </button>
+      </div>
+    </section>
+
+    <!-- Scrollable Body -->
+    <div class="body">
+
+      <!-- Idle placeholder -->
+      <div class="idle-state">
+        <div class="idle-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="18" y1="20" x2="18" y2="10"/>
+            <line x1="12" y1="20" x2="12" y2="4"/>
+            <line x1="6"  y1="20" x2="6"  y2="14"/>
+          </svg>
+        </div>
+        <p class="idle-hint">
+          Enter a stock query above.<br>
+          e.g. <em>"Analyse AAPL this week"</em> or <em>"What moved NVDA?"</em>
+        </p>
+      </div>
+
+      <!-- LLM Thinking Spinner -->
+      <div class="llm-thinking">
+        <div class="spinner" role="status" aria-label="Loading"></div>
+        <span class="llm-thinking-text">Gemini is analysing…</span>
+      </div>
+
+      <!-- Agent Reasoning Chain -->
+      <section class="reasoning-panel" aria-label="Agent reasoning chain">
+        <div class="reasoning-header" id="reasoning-header">
+          <span class="status-dot" aria-hidden="true"></span>
+          Agent Reasoning Chain
+        </div>
+        <ul class="steps-list" id="steps-list"></ul>
+        <!-- Live Tool Cards -->
+        <div class="tool-cards" id="tool-cards"></div>
+      </section>
+
+      <!-- Error Banner -->
+      <div class="error-banner" id="error-banner" role="alert"></div>
+
+      <!-- Price Summary -->
+      <div class="price-summary" id="price-summary" aria-live="polite">
+        <span class="price-ticker" id="price-ticker">—</span>
+        <span class="price-value"  id="price-value">—</span>
+        <span class="price-change" id="price-change"></span>
+      </div>
+
+      <!-- Chart -->
+      <section class="chart-section" id="chart-section" aria-label="Price chart">
+        <canvas id="price-chart"></canvas>
+      </section>
+
+      <!-- Annotated Day Rows -->
+      <div class="timeline-rows" id="timeline-rows"></div>
+
+      <!-- Final Answer -->
+      <section class="results-panel" id="results-panel" aria-label="Analysis summary">
+        <div class="results-title">Summary</div>
+        <div class="results-text" id="results-text"></div>
+      </section>
+
+    </div><!-- /body -->
+  </div>
+
+  <script src="../lib/chart.min.js"></script>
+  <script type="module" src="sidebar.js"></script>
+</body>
+</html>

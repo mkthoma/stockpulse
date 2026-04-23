@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>StockPulse</title>
+  <style>
+    :root {
+      --color-primary:     #1B4332;
+      --color-primary-mid: #2D6A4F;
+      --color-accent:      #52B788;
+      --color-bg:          #FAFAF8;
+      --color-surface:     #F0F5F1;
+      --color-card-bg:     #EAF4EE;
+      --color-border:      #C8DDD0;
+      --color-text:        #0D1F14;
+      --color-muted:       #527A5F;
+      --radius: 10px;
+      --radius-sm: 6px;
+      --font: system-ui, -apple-system, 'Segoe UI', sans-serif;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --color-bg:      #0A1810;
+        --color-surface: #122118;
+        --color-card-bg: #1A3024;
+        --color-border:  #234030;
+        --color-text:    #E8F5ED;
+        --color-muted:   #74A882;
+        --color-primary: #40916C;
+        --color-accent:  #74C69D;
+      }
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      width: 260px;
+      font-family: var(--font);
+      font-size: 13px;
+      color: var(--color-text);
+      background: var(--color-bg);
+    }
+    .header {
+      background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-mid) 100%);
+      color: #fff;
+      padding: 13px 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: -0.01em;
+    }
+    .header-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      overflow: hidden;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .header-icon img { display: block; width: 28px; height: 28px; border-radius: 6px; }
+    .content { padding: 14px; }
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      border: none;
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      transition: background 150ms, transform 150ms, box-shadow 150ms;
+      margin-bottom: 8px;
+    }
+    .btn svg { width: 14px; height: 14px; stroke: currentColor; flex-shrink: 0; }
+    .btn:active { transform: scale(0.97); }
+    .btn-primary {
+      background: var(--color-primary-mid);
+      color: #fff;
+      box-shadow: 0 1px 4px rgba(27,67,50,0.25);
+    }
+    .btn-primary:hover { background: var(--color-primary); box-shadow: 0 2px 8px rgba(27,67,50,0.30); }
+    .btn-secondary {
+      background: var(--color-surface);
+      color: var(--color-text);
+      border: 1.5px solid var(--color-border);
+    }
+    .btn-secondary:hover { background: var(--color-card-bg); border-color: var(--color-accent); }
+    .shortcut-hint {
+      font-size: 11px;
+      color: var(--color-muted);
+      text-align: center;
+      margin-top: -2px;
+      margin-bottom: 10px;
+    }
+    .last-query {
+      background: var(--color-surface);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      margin-top: 4px;
+      border: 1px solid var(--color-border);
+    }
+    .last-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--color-muted);
+      margin-bottom: 5px;
+    }
+    .last-text { font-size: 12px; color: var(--color-text); line-height: 1.4; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="header-icon">
+      <img src="../assets/stockpulse_logo_icon.svg" alt="StockPulse logo" width="28" height="28">
+    </div>
+    StockPulse
+  </div>
+  <div class="content">
+    <button class="btn btn-primary" id="open-sidebar">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3" y="3" width="18" height="18" rx="2"/>
+        <line x1="15" y1="3" x2="15" y2="21"/>
+      </svg>
+      Open Sidebar
+    </button>
+    <p class="shortcut-hint">or press Alt+S on any page</p>
+    <button class="btn btn-secondary" id="open-options">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+      </svg>
+      Settings
+    </button>
+    <div class="last-query" id="last-query" style="display:none">
+      <div class="last-label">Last Query</div>
+      <div class="last-text" id="last-text"></div>
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>

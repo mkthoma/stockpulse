@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>StockPulse — Settings</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="page">
+
+    <!-- Header -->
+    <header class="page-header">
+      <div class="brand-icon-wrap">
+        <img src="../assets/stockpulse_logo_icon.svg" alt="StockPulse logo" width="40" height="40">
+      </div>
+      <div class="brand-text">
+        <span class="brand">StockPulse</span>
+        <span class="subtitle">Settings</span>
+      </div>
+    </header>
+
+    <main class="content">
+
+      <!-- ── API Keys ──────────────────────────────────────── -->
+      <section class="section">
+        <h2 class="section-title">API Keys</h2>
+        <div class="section-body">
+
+          <div class="field">
+            <label class="label" for="gemini-key">Gemini API Key</label>
+            <p class="hint">Get one free at <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">Google AI Studio</a>. Format: AIza…</p>
+            <div class="input-row">
+              <input type="password" id="gemini-key" class="input input-apikey" placeholder="AIzaSy…" autocomplete="off" aria-label="Gemini API key">
+              <button class="btn-reveal" data-for="gemini-key" aria-label="Toggle Gemini key visibility">
+                <!-- Eye icon -->
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label" for="news-key">NewsAPI Key</label>
+            <p class="hint">Get one free at <a href="https://newsapi.org/register" target="_blank" rel="noopener">newsapi.org</a>.</p>
+            <div class="input-row">
+              <input type="password" id="news-key" class="input input-apikey" placeholder="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" autocomplete="off" aria-label="NewsAPI key">
+              <button class="btn-reveal" data-for="news-key" aria-label="Toggle NewsAPI key visibility">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ── Model ─────────────────────────────────────────── -->
+      <section class="section">
+        <h2 class="section-title">Model</h2>
+        <div class="section-body">
+
+          <div class="field">
+            <label class="label" for="model-select">Gemini Model</label>
+            <select id="model-select" class="input select" aria-label="Gemini model selection">
+              <option value="gemini-3.1-flash-lite-preview">Gemini 3.1 Flash Lite (default)</option>
+              <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
+              <option value="gemini-3-flash-preview">Gemini 3 Flash</option>
+              <option value="gemini-2.5-flash-lite">Gemini 2.5 Flash Lite</option>
+            </select>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ── Save ──────────────────────────────────────────── -->
+      <div class="actions">
+        <button class="btn-save" id="save-btn">Save Settings</button>
+        <span class="save-status" id="save-status" role="status" aria-live="polite"></span>
+      </div>
+
+      <!-- ── LLM Call Logs ─────────────────────────────────── -->
+      <section class="section logs-section">
+        <div class="logs-header">
+          <h2 class="section-title" style="margin:0; padding:0; background:transparent; border:none;">LLM Call Logs</h2>
+          <div class="logs-controls">
+            <button class="btn-sm" id="refresh-logs" aria-label="Refresh logs">
+              <!-- Refresh icon -->
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="1 4 1 10 7 10"/>
+                <path d="M3.51 15a9 9 0 1 0 .49-4.88"/>
+              </svg>
+              Refresh
+            </button>
+            <button class="btn-sm btn-danger" id="clear-logs" aria-label="Clear all logs">
+              <!-- X icon -->
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+              Clear
+            </button>
+          </div>
+        </div>
+
+        <div class="logs-body">
+          <p class="hint-logs">Every Gemini API call made by the agent loop. Last 100 entries. API keys are never logged.</p>
+          <div id="logs-container">
+            <p class="logs-empty" id="logs-empty">No calls yet. Run a query to see logs.</p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>

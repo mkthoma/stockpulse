@@ -1,0 +1,42 @@
+{
+  "name": "stockpulse",
+  "version": "1.0.0",
+  "description": "Agentic AI stock news intelligence Chrome Extension",
+  "type": "module",
+  "scripts": {
+    "test":          "node --experimental-vm-modules node_modules/.bin/jest",
+    "test:watch":    "node --experimental-vm-modules node_modules/.bin/jest --watch",
+    "test:coverage": "node --experimental-vm-modules node_modules/.bin/jest --coverage",
+    "icons":         "node icons/generate.js",
+    "get-chart":     "curl -L https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js -o lib/chart.min.js"
+  },
+  "devDependencies": {
+    "jest":               "^29.0.0",
+    "jest-environment-jsdom": "^29.0.0",
+    "@jest/globals":      "^29.0.0",
+    "canvas":             "^2.11.2"
+  },
+  "jest": {
+    "transform": {},
+    "testEnvironment": "node",
+    "testMatch": ["**/tests/**/*.test.js"],
+    "moduleNameMapper": {
+      "^../sidebar/AnimationManager\\.js$": "<rootDir>/sidebar/AnimationManager.js",
+      "^../sidebar/ReasoningChain\\.js$":   "<rootDir>/sidebar/ReasoningChain.js"
+    },
+    "projects": [
+      {
+        "displayName": "node",
+        "testMatch": ["**/tests/tools.test.js", "**/tests/agent.test.js"],
+        "testEnvironment": "node",
+        "transform": {}
+      },
+      {
+        "displayName": "jsdom",
+        "testMatch": ["**/tests/animation.test.js"],
+        "testEnvironment": "jsdom",
+        "transform": {}
+      }
+    ]
+  }
+}

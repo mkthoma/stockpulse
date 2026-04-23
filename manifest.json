@@ -1,0 +1,46 @@
+{
+  "manifest_version": 3,
+  "name": "StockPulse",
+  "version": "1.0.0",
+  "description": "Agentic AI stock news intelligence. Type a stock query — watch the agent fetch prices, search news, and link them.",
+  "permissions": ["storage", "activeTab", "scripting"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [{
+    "matches": ["<all_urls>"],
+    "js": ["content/content.js"],
+    "run_at": "document_idle"
+  }],
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/16.png",
+      "48": "icons/48.png",
+      "128": "icons/128.png"
+    }
+  },
+  "options_page": "options/options.html",
+  "web_accessible_resources": [{
+    "resources": [
+      "sidebar/sidebar.html",
+      "sidebar/sidebar.js",
+      "sidebar/sidebar.css",
+      "sidebar/AnimationManager.js",
+      "sidebar/ReasoningChain.js",
+      "sidebar/TimelineChart.js",
+      "sidebar/ResultsPanel.js",
+      "lib/chart.min.js",
+      "lib/isEnglishHeadline.js"
+    ],
+    "matches": ["<all_urls>"]
+  }],
+  "commands": {
+    "toggle-sidebar": {
+      "suggested_key": { "default": "Alt+S" },
+      "description": "Toggle StockPulse sidebar"
+    }
+  }
+}
