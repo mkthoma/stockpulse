@@ -27,11 +27,7 @@ StockPulse is a **browser extension** that embeds an intelligent sidebar into an
 
 ## 🎬 Demo video
 
-<video controls playsinline preload="metadata" width="100%" style="max-width: 48rem; border-radius: 8px;"
-  poster="https://raw.githubusercontent.com/mkthoma/stockpulse/main/assets/StockPulse%20Screenshot.png">
-  <source src="https://raw.githubusercontent.com/mkthoma/stockpulse/main/assets/Stockpulse%20Demo.mp4" type="video/mp4">
-  <a href="https://github.com/mkthoma/stockpulse/blob/main/assets/Stockpulse%20Demo.mp4">Open demo (MP4)</a>
-</video>
+https://github.com/user-attachments/assets/073f7542-8168-4344-b20a-94cab16d5c18
 
 [Raw MP4](https://raw.githubusercontent.com/mkthoma/stockpulse/main/assets/Stockpulse%20Demo.mp4)
 
