@@ -6,7 +6,6 @@
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES_Modules-F7DF1E?logo=javascript&logoColor=black)
 ![Version](https://img.shields.io/badge/Version-1.0.0-green)
 
-*The row above uses [Shields.io](https://shields.io/) badges — optional visual tags (Chrome extension, MV3, Gemini, ES modules, version) so GitHub readers see the stack at a glance; they are not part of the extension code.*
 
 **Agentic AI stock news intelligence for Chrome.** Type a stock query — the agent fetches live prices, optional peer tickers, broad-market context (SPY/QQQ), English-filtered news, correlates price with headlines (including prior-evening news), runs a compact **driver analysis** step, and delivers a structured markdown report with charts and a clean daily breakdown.
 
@@ -23,6 +22,18 @@ StockPulse is a **browser extension** that embeds an intelligent sidebar into an
 - **AI-correlated insights** — The agent connects price movements to news events
 - **Live reasoning** — Watch the AI's thinking process step-by-step
 - **Always available** — Sidebar works on any webpage via keyboard shortcut (`Alt+S`)
+
+---
+
+## 🎬 Demo video
+
+<!-- GitHub’s README view needs an absolute raw URL; relative paths often render an empty player. -->
+<video controls playsinline preload="metadata" width="100%" style="max-width: 48rem; border-radius: 8px;">
+  <source src="https://raw.githubusercontent.com/mkthoma/stockpulse/main/assets/Stockpulse%20Demo.mp4" type="video/mp4">
+  <a href="https://github.com/mkthoma/stockpulse/blob/main/assets/Stockpulse%20Demo.mp4">Open demo video (MP4)</a>
+</video>
+
+[Open video on GitHub](https://github.com/mkthoma/stockpulse/blob/main/assets/Stockpulse%20Demo.mp4) · [Raw MP4](https://raw.githubusercontent.com/mkthoma/stockpulse/main/assets/Stockpulse%20Demo.mp4)
 
 ---
 
@@ -59,12 +70,6 @@ Same sidebar run, query *“analyze nvidia stock this week”*. (Source PNGs: [`
 1. **Reasoning chain** — Live steps: `get_stock_price` / `get_peer_tickers`, then `search_news` / `get_market_context`, then `correlate_price_to_news`. Transparency: which data fed the answer.
 2. **Chart + breakdown** — Price line, **`summarise_findings(NVDA)`**, and **Daily Breakdown** (English headlines).
 3. **Report** — Markdown sections rendered as cards: **Summary**, **Key price events**, **Peer & sector context**, **Conclusion**.
-
----
-
-## 🎬 Demo video
-
-<video src="assets/Stockpulse%20Demo.mp4" controls playsinline preload="metadata" width="100%" style="max-width: 48rem; border-radius: 8px;"></video>
 
 ---
 
