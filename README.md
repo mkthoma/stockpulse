@@ -64,21 +64,7 @@ Same sidebar run, query *“analyze nvidia stock this week”*. (Source PNGs: [`
 
 ## 🎬 Demo video
 
-A short screen recording helps new users see the full loop (toggle sidebar → query → reasoning chain → chart → report).
-
-| What to include | Suggested beats |
-|-----------------|-----------------|
-| **Setup** | Load unpacked extension, open Options, paste Gemini + NewsAPI keys, pick a model |
-| **Run** | `Alt+S` on any page, query e.g. *“Analyze NVDA this week”* |
-| **Narrate** | Point out parallel tools, `correlate_price_to_news`, `summarise_findings`, English-only headlines |
-| **Length** | 60–120 seconds is enough |
-
-**Placeholder — add your link when ready:**
-
-- **YouTube / Loom / Vimeo:** replace the URL below  
-  `[StockPulse demo (TODO)](https://example.com/demo)`  
-- **Or** commit a file under `docs/demo.webm` and link it from the repo Releases or README:  
-  `docs/demo.webm` *(not included by default)*
+<video src="assets/Stockpulse%20Demo.mp4" controls playsinline preload="metadata" width="100%" style="max-width: 48rem; border-radius: 8px;"></video>
 
 ---
 
@@ -124,33 +110,38 @@ StockPulse is **one Gemini-driven agent** (multi-turn function calling), not a f
 ### System Overview
 
 ```mermaid
-graph TB
-    USER["👤 User on Webpage"]
-    SIDEBAR["📱 Sidebar iframe<br/>HTML/CSS/JS UI"]
-    CONTENT["📄 Content Script<br/>Message Bridge"]
-    BG["⚙️ Background Service Worker<br/>AgentRunner"]
-    GEMINI["🤖 Gemini API<br/>Multi-turn"]
-    TOOLS["🔧 Tools Executor<br/>Parallel"]
-    YAHOO["💹 Yahoo Finance"]
-    NEWS["📰 NewsAPI"]
-    STORAGE["💾 chrome.storage.local<br/>Keys + Logs"]
+flowchart TB
+    subgraph UI["Browser UI"]
+        USER(["User"])
+        SIDEBAR["Sidebar iframe<br/>HTML / CSS / JS"]
+        CONTENT["Content script<br/>postMessage bridge"]
+    end
 
-    USER -->|Alt+S| SIDEBAR
-    USER -->|Type Query| SIDEBAR
-    SIDEBAR -->|postMessage| CONTENT
-    CONTENT -->|chrome.runtime.sendMessage| BG
-    BG -->|calls| GEMINI
-    GEMINI -->|returns<br/>function_calls| BG
-    BG -->|dispatches| TOOLS
-    TOOLS -->|get_stock_price get_market_context get_peer_tickers| YAHOO
-    TOOLS -->|search_news| NEWS
-    TOOLS -->|correlate summarise_findings| BG
-    BG -->|AGENT_STEP| CONTENT
-    CONTENT -->|postMessage| SIDEBAR
-    SIDEBAR -->|renders| SIDEBAR
-    BG -->|reads/writes| STORAGE
-    GEMINI -->|reads key| STORAGE
+    subgraph SW["Service worker"]
+        BG["Background<br/>AgentRunner"]
+        TOOLS["Tool runner<br/>parallel execution"]
+    end
+
+    subgraph EXT["External APIs"]
+        GEMINI["Gemini API<br/>multi-turn tools"]
+        YAHOO["Yahoo Finance<br/>price, peers, SPY/QQQ"]
+        NEWS["NewsAPI<br/>search_news"]
+    end
+
+    STORE[("chrome.storage.local<br/>keys and logs")]
+
+    USER -->|"Alt+S · type query"| SIDEBAR
+    SIDEBAR <-->|postMessage| CONTENT
+    CONTENT <-->|"sendMessage · AGENT_STEP / replies"| BG
+    BG <-->|"request · function_calls"| GEMINI
+    BG -->|dispatch tools| TOOLS
+    TOOLS --> YAHOO
+    TOOLS --> NEWS
+    TOOLS -->|structured results| BG
+    BG <-->|read / write| STORE
 ```
+
+*UI updates flow back along the same path: background → content script → `postMessage` → sidebar (reasoning chain, chart, final markdown).*
 
 ### Message Flow
 
@@ -234,29 +225,28 @@ Shared utility:
 ## 🤖 Agent Loop Flowchart
 
 ```mermaid
-flowchart TD
-    A["🟢 START: Receive user query"] --> B["📝 Add query to message history"]
-    B --> C["🔄 Turn counter ≤ 10?"]
-    C -->|No| D["❌ Max turns exceeded"]
-    C -->|Yes| E["🤖 Call Gemini API<br/>with history"]
-    E --> F{Response has<br/>function_calls?}
-    F -->|No| G["✅ Text response received"]
-    G --> H["📊 Emit FINAL_ANSWER"]
-    H --> I["🎯 Render chart + timeline + summary"]
-    I --> J["🔴 END"]
-    F -->|Yes| K["⚙️ Extract function calls"]
-    K --> L["🚀 Dispatch tools in parallel"]
-    L --> M["⏳ Wait for all tool results"]
-    M --> N["➕ Add tool results to history"]
-    N --> O["📢 Emit AGENT_STEP event"]
-    O --> P["💫 Update sidebar UI live"]
-    P --> C
-    D --> Q["⚠️ Emit error event"]
-    Q --> J
-    E -->|Error| R["🔁 Retry with exponential backoff<br/>up to 3 times"]
-    R -->|Fail| D
-    R -->|Success| F
+flowchart TB
+    START([Receive user query]) --> HIST[Add user message to history]
+    HIST --> TURN{Turn count ≤ 10?}
+    TURN -->|No| MAX[Max turns or retries exceeded]
+    TURN -->|Yes| CALL[Call Gemini with history]
+    CALL --> OKAPI{Request succeeded?}
+    OKAPI -->|No| RETRY{Retries left under limit?}
+    RETRY -->|Yes · backoff| CALL
+    RETRY -->|No| MAX
+    OKAPI -->|Yes| FC{Response has function_calls?}
+    FC -->|No| ANSWER[Emit FINAL_ANSWER]
+    ANSWER --> RENDER[Render chart, timeline, summary]
+    RENDER --> FIN([Done])
+    FC -->|Yes| TOOLS[Run tools in parallel]
+    TOOLS --> STEP[Emit AGENT_STEP · refresh UI]
+    STEP --> MERGE[Append tool results to history]
+    MERGE --> TURN
+    MAX --> ERR[Emit error to sidebar]
+    ERR --> FIN
 ```
+
+*Retries use exponential backoff in code (transient API errors); the diagram collapses that into one decision node to keep the layout readable.*
 
 ---
 
